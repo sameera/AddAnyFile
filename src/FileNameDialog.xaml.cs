@@ -55,7 +55,9 @@ namespace MadsKristensen.AddAnyFile
                     else
                         txtName.Text = string.Empty;
                 }
-                else if (b.Key == Key.OemPeriod && (p = txtName.Text.LastIndexOf('.')) > -1)
+                else if (b.Key == Key.OemPeriod 
+                    && (p = txtName.Text.LastIndexOf('.')) > -1
+                    && txtName.SelectionStart <= p)
                 {
                     txtName.Select(p, txtName.Text.Length - p);
                 }
