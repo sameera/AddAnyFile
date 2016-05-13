@@ -3,7 +3,7 @@
 A Visual Studio extension for easily adding new files to any project. Simply hit Shift+F2 to create an empty file in the
 selected folder or in the same folder as the selected file.
 
-#Note from Sameera Perera
+###Note from Sameera Perera
 This extension was forked from Mads Kristensen's Add File extension to support VS's build in templates. Since merging this repo, 
 the original extension seems to have evolved without continuing to support Visual Studio templates, I'm going to leave this fork
 unsynced with the original.
