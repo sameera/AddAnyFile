@@ -9,7 +9,7 @@ the original extension seems to have evolved without continuing to support Visua
 unsynced with the original.
 
 Due to this, this repo has additional features that the original extension does not; such as the suggesting a file extension
-when on the file name prompt.
+when on the file name prompt. It may also be missing features that the current version of the original extension has as no attempt has been made to keep the extension current with the original code base.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/252jpryc38qah37x?svg=true)](https://ci.appveyor.com/project/madskristensen/addanyfile)
 
