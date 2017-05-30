@@ -34,7 +34,7 @@ namespace MadsKristensen.AddAnyFile
         {
             _dte = GetService(typeof(DTE)) as DTE2;
             ServiceProvider = this;
-
+            
             base.Initialize();
 
             OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
@@ -64,7 +64,9 @@ namespace MadsKristensen.AddAnyFile
             if (project == null)
                 return;
 
-            string defaultExt = GetProjectDefaultExtension(project);
+            var config = ExtensionConfig.LoadFromFile(GetAbsolutePath(project, "addfilepp.config.json"));
+
+            string defaultExt = config.DefaultExtension ?? GetProjectDefaultExtension(project);
             string input = PromptForFileName(
                                 folder,
                                 defaultExt
@@ -77,7 +79,7 @@ namespace MadsKristensen.AddAnyFile
                 input = input + "__dummy__";
             }
 
-            TemplateMap templates = GetTemplateMap();
+            TemplateMap templates = GetTemplateMap(project, config.Mappings);
 
             string projectPath = Path.GetDirectoryName(project.FullName);
             string relativePath;
@@ -158,7 +160,7 @@ namespace MadsKristensen.AddAnyFile
             return _lastUsedExtension;
         }
 
-        private static TemplateMap GetTemplateMap()
+        private static TemplateMap GetTemplateMap(Project project, TemplateMap overrides)
         {
             TemplateMap templates = null;
             if (_templates == null)
@@ -167,7 +169,7 @@ namespace MadsKristensen.AddAnyFile
                     {
                         string path = Path.Combine(
                                         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                                        "VisualStudio.AddAnyFile",
+                                        "VisualStudio.AddFilePlusPlus",
                                         "Patterns.json");
                         if ((templates = TemplateMap.LoadFromFile(path)) == null)
                         {
@@ -175,7 +177,17 @@ namespace MadsKristensen.AddAnyFile
                             templates.LoadDefaultMappings();
                             TemplateMap.WriteToFile(templates, path);
                         }
-                        _templates = templates;
+                        
+                        if (overrides != null)
+                        {
+                            overrides.MergeWith(templates);
+                            _templates = overrides;
+                        }
+                        else
+                        {
+                            _templates = templates;
+                        }
+
                     }
             return _templates;
         }
@@ -188,9 +200,16 @@ namespace MadsKristensen.AddAnyFile
             return (result.HasValue && result.Value) ? dialog.Input : string.Empty;
         }
 
+        private static string GetAbsolutePath(Project project, string relativePath)
+        {
+            string projectPath = Path.GetDirectoryName(project.FullName);
+            return Path.Combine(projectPath, relativePath);
+        }
+
         private static string GetRelativePath(Project project, string fullName)
         {
             string projectPath = Path.GetDirectoryName(project.FullName);
+
             if (fullName.StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
                 return fullName.Substring(projectPath.Length + 1);
             else

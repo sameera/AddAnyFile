@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using Newtonsoft.Json;
+using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 
 namespace MadsKristensen.AddAnyFile.Templates
@@ -6,11 +7,11 @@ namespace MadsKristensen.AddAnyFile.Templates
     [DataContract]
     public class TemplateMapping
     {
-        [DataMember]
+        [JsonProperty("pattern")]
         public string Pattern { get; set; }
-        [DataMember]
+        [JsonProperty("language")]
         public string Language { get; set; }
-        [DataMember]
+        [JsonProperty("templateName")]
         public string TemplateName { get; set; }
 
         private Regex _patternExpression;

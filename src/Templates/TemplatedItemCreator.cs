@@ -29,7 +29,7 @@
             string itemName = _relativePath[_relativePath.Length - 1];
             if (!itemName.EndsWith(ext, StringComparison.OrdinalIgnoreCase))
                 itemName += ext;
-
+            
             var parent = GetItemParent(project);
             parent.AddFromTemplate(templatePath, itemName);
 

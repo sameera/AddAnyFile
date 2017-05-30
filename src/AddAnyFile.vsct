@@ -10,7 +10,7 @@
                 <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_ADD_ITEMS"/>
                 <Strings>
                     <CommandName>AddEmptyFile</CommandName>
-                    <ButtonText>New Empty File...</ButtonText>
+                    <ButtonText>Quick Add...</ButtonText>
                 </Strings>
             </Button>
         </Buttons>

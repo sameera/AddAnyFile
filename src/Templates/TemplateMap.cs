@@ -1,9 +1,9 @@
 ﻿namespace MadsKristensen.AddAnyFile.Templates
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization.Json;
     using M = TemplateMapping;
 
     /// <summary>
@@ -49,11 +49,8 @@
             {
                 try
                 {
-                    using (var fileStream = File.OpenRead(path))
-                    {
-                        var deserializer = new DataContractJsonSerializer(typeof(TemplateMap));
-                        return deserializer.ReadObject(fileStream) as TemplateMap;
-                    }
+                    string input = File.ReadAllText(path);
+                    return JsonConvert.DeserializeObject<TemplateMap>(input);
                 }
                 catch (Exception e)
                 {
@@ -72,15 +69,8 @@
             try
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
-                using (var fileStream = File.OpenWrite(path))
-                {
-                    var serizlier = new DataContractJsonSerializer(
-                                        typeof(TemplateMap),
-                                        new DataContractJsonSerializerSettings() {
-                                            UseSimpleDictionaryFormat = true
-                                        });
-                    serizlier.WriteObject(fileStream, map);
-                }
+                string json = JsonConvert.SerializeObject(map, Formatting.Indented);
+                File.WriteAllText(path, json);
             }
             catch (System.Exception e)
             {
@@ -91,6 +81,11 @@
                     e.Message));
 
             }
+        }
+
+        public void MergeWith(TemplateMap lowerPriorityMappings)
+        {
+            this.AddRange(lowerPriorityMappings);
         }
 
         public TemplateMap()

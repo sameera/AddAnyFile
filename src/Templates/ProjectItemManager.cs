@@ -18,9 +18,7 @@ namespace MadsKristensen.AddAnyFile.Templates
             if (template != null)
             {
                 path[path.Length - 1] = fileName;
-                return new TemplatedItemCreator((Solution2)_dte.Solution, 
-                    template, 
-                    path);
+                return new TemplatedItemCreator((Solution2)_dte.Solution, template, path);
             }
             else
             {
