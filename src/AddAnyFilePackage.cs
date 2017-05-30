@@ -64,7 +64,7 @@ namespace MadsKristensen.AddAnyFile
             if (project == null)
                 return;
 
-            var config = ExtensionConfig.LoadFromFile(GetAbsolutePath(project, "addfilepp.config.json"));
+            var config = ExtensionConfig.LoadFromFile(GetAbsolutePath(project, "addfile.config.json"));
 
             string defaultExt = config.DefaultExtension ?? GetProjectDefaultExtension(project);
             string input = PromptForFileName(
